@@ -2,9 +2,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>成功</title>
 </head>
 <body>
-    hello world!!
+    登录成功！！
 </body>
 </html>

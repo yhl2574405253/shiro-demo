@@ -15,17 +15,24 @@
       <artifactId>shiro-core</artifactId>
       <version>1.4.0</version>
     </dependency>
+
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.2</version>
     </dependency>
 
-
-<!--web 环境下需要的配置-->
+    <!--web 环境下需要的配置-->
     <dependency>
       <groupId>org.apache.shiro</groupId>
       <artifactId>shiro-web</artifactId>
+      <version>1.4.0</version>
+    </dependency>
+
+    <!--集成spring需要的jar包-->
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-spring</artifactId>
       <version>1.4.0</version>
     </dependency>
 
@@ -35,7 +42,68 @@
       <artifactId>spring-webmvc</artifactId>
       <version>4.3.12.RELEASE</version>
     </dependency>
+
+    <!-- 配置jdbc -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>4.3.12.RELEASE</version>
+    </dependency>
+
+    <!-- 配置mysql的架包 -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.26</version>
+    </dependency>
+
+    <!--导入json依赖-->
+    <dependency>
+      <groupId>net.sf.json-lib</groupId>
+      <artifactId>json-lib</artifactId>
+      <version>2.4</version>
+      <classifier>jdk15</classifier>
+    </dependency>
+
+    <!--添加消息转换器的依赖-->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+      <version>1.2.17</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-xml</artifactId>
+      <version>2.8.7</version>
+    </dependency>
+
+    <!--添加阿里巴巴的数据源-->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid</artifactId>
+      <version>1.1.5</version>
+    </dependency>
+
+    <!-- mybatis架包 -->
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis</artifactId>
+      <version>3.2.8</version>
+    </dependency>
+
+    <!-- mybatis的子类 用来跟spring进行连接 -->
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis-spring</artifactId>
+      <version>1.2.3</version>
+    </dependency>
+
+    <!--javaee.jar包是支持javaWeb编程的基础jar包-->
+    <dependency>
+      <groupId>org.apache.openejb</groupId>
+      <artifactId>javaee-api</artifactId>
+      <version>5.0-1</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
-
-
 </project>

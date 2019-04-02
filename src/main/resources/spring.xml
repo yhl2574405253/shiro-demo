@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
+
+<!-- 扫描cn -->
+    <context:component-scan base-package="cn">
+        <!-- spring是bean的容器（spring用来操做 service+repository）controler是springmvc操作的 所以排除-->
+        <!--<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />-->
+    </context:component-scan>
+
+    <!-- 扫描jdbc文件 -->
+    <context:property-placeholder location="classpath:jdbc.properties" />
+
+    <!--
+    所有数据库操作的源头 实现自接口DataSouce DriverManagerDataSource
+     还有很多连接池继承DataSouce DriverManagerDataSource 实现了很多子连接池 比如c3p0 dbcp druid
+     这里我们就用阿里的druid，因为这个连接池有一个监控功能
+    -->
+    <!-- 连接数据库 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="url" value="${url}"></property>
+        <property name="driverClassName" value="${driverClass}"></property>
+        <property name="username" value="${username1}"></property>
+        <property name="password" value="${password1}"></property>
+    </bean>
+
+    <!-- 集成mybatis -->
+    <!-- 实例化一个SqlSessionFactory工厂-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--指定数据源-->
+        <property name="dataSource" ref="dataSource"></property>
+        <!--指定实体文件所在的位置-->
+        <property name="typeAliasesPackage" value="cn.et.model"/>
+        <!--指定mapper.xml文件所在的位置-->
+        <property name="mapperLocations" value="classpath:mapper/*.xml" />
+    </bean>
+
+    <!-- 扫描mybatis的接口映射文件  -->
+    <bean id="scannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="cn.et.demo02.mapper"></property>
+    </bean>
+
+    <!-- 安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!-- 自定义 realm -->
+        <property name="realm" ref="myDbRealm"/>
+    </bean>
+
+    <!--管理ShiRo bean生命周期的-->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- spring 配置ini -->
+    <bean id="shiRoFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <!--如果需要登录就跳转到 Login.jsp-->
+        <property name="loginUrl" value="/Login.jsp"/>
+        <!--如果没有权限就跳转 RoleError.jsp-->
+        <property name="unauthorizedUrl" value="/RoleError.jsp"/>
+        <!--配置 自定义 shiRo过滤器-->
+        <property name="filters">
+            <util:map>
+                <entry key="filter" value-ref="myFilter"></entry>
+            </util:map>
+        </property>
+        <property name="filterChainDefinitions">
+            <value>
+                /** = filter
+            </value>
+        </property>
+
+        <!--配置shiRo过滤器-->
+        <!--<property name="filterChainDefinitions">-->
+            <!--<value>-->
+            <!--/Login.jsp = anon-->
+            <!--/LoginSuccess.jsp = authc-->
+            <!--/RoleSuccess.jsp = roles[role2]-->
+            <!--</value>-->
+        <!--</property>-->
+    </bean>
+</beans>
